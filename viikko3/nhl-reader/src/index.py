@@ -1,5 +1,6 @@
 import requests
 from player import Player
+from datetime import datetime
 
 def main():
     url = "https://nhlstatisticsforohtu.herokuapp.com/players"
@@ -10,7 +11,9 @@ def main():
         player = Player(player_dict)
         players.append(player)
 
-    for player in players:
+    print(f"Players from FIN {datetime.now()}")
+
+    for player in sorted(players):
         if player.nationality == 'FIN':
             print(player)
 

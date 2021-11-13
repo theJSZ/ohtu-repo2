@@ -9,4 +9,7 @@ class Player:
         self.games       = d['games']
     
     def __str__(self):
-        return f"{self.name} -- team: {self.team} -- goals: {self.goals} assists: {self.assists}"
+        return f"{self.name:20} {self.team} {self.goals:2} + {self.assists:<2} = {self.goals+self.assists}"
+
+    def __gt__(self, other):
+        return self.goals + self.assists < other.goals + other.assists
