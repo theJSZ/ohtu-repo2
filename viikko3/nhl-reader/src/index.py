@@ -1,20 +1,16 @@
 import requests
 from player import Player
 from datetime import datetime
+from player_reader import PlayerReader
+from player_stats import PlayerStats
 
 def main():
     url = "https://nhlstatisticsforohtu.herokuapp.com/players"
-    response = requests.get(url).json()
-    players = []
+    reader = PlayerReader(url)
+    stats = PlayerStats(reader)
+    players = stats.top_scorers_by_nationality("FIN")
 
-    for player_dict in response:
-        player = Player(player_dict)
-        players.append(player)
-
-    print(f"Players from FIN {datetime.now()}")
-
-    for player in sorted(players):
-        if player.nationality == 'FIN':
-            print(player)
+    for player in players:
+        print(player)
 
 main()
