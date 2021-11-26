@@ -1,6 +1,7 @@
 import unittest
 from ostoskori import Ostoskori
 from tuote import Tuote
+from ostos import Ostos
 
 class TestOstoskori(unittest.TestCase):
     def setUp(self):
@@ -76,4 +77,12 @@ class TestOstoskori(unittest.TestCase):
         self.kori.lisaa_tuote(maito)
         ostokset = self.kori.ostokset()
         self.assertEqual(len(ostokset), 1)
+
+    # step 12
+    def test_kahden_saman_tuotteen_jalkeen_korissa_oikeanlainen_ostos(self):
+        maito = Tuote("maito", 2)
+        self.kori.lisaa_tuote(maito)
+        self.kori.lisaa_tuote(maito)
+        self.assertEqual(self.kori.ostokset()[0].tuotteen_nimi(), "maito")
+        self.assertEqual(self.kori.ostokset()[0].lukumaara(), 2)
 
