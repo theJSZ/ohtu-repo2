@@ -21,6 +21,5 @@ def main():
     game.won_point("player1")
     print(game.get_score())
 
-
 if __name__ == "__main__":
     main()

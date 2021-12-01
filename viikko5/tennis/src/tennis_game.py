@@ -1,57 +1,55 @@
 class TennisGame:
+
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
         self.player2_name = player2_name
-        self.m_score1 = 0
-        self.m_score2 = 0
+        self.player1_score = 0
+        self.player2_score = 0
+        self.score_strings = ["Love", "Fifteen", "Thirty", "Forty"]
 
     def won_point(self, player_name):
         if player_name == "player1":
-            self.m_score1 = self.m_score1 + 1
+            self.player1_score += 1
         else:
-            self.m_score2 = self.m_score2 + 1
+            self.player2_score += 1
+
+    def get_tie_string(self):
+        if self.player1_score > 3:
+            return "Deuce"
+        return f'{self.score_strings[self.player1_score]}-All'
+
+    def tie(self):
+        return self.player1_score == self.player2_score
+
+    def both_over_30(self):
+        return self.player1_score >= 3 and self.player2_score >= 3
+
+    def get_normal_score_string(self):
+        return f'{self.score_strings[self.player1_score]}-{self.score_strings[self.player2_score]}'
+
+    def get_leader(self):
+        if self.player1_score > self.player2_score:
+            return "player1"
+        if self.player2_score > self.player1_score:
+            return "player2"
+
+    def get_winner(self):
+        winner = None
+        if max(self.player1_score, self.player2_score) > 3 and abs(self.player1_score - self.player2_score) > 1:
+            if self.player1_score > self.player2_score:
+                winner = "player1"
+            else:
+                winner = "player2"
+        return winner
 
     def get_score(self):
-        score = ""
-        temp_score = 0
+        if self.get_winner():
+            return f'Win for {self.get_winner()}' 
 
-        if self.m_score1 == self.m_score2:
-            if self.m_score1 == 0:
-                score = "Love-All"
-            elif self.m_score1 == 1:
-                score = "Fifteen-All"
-            elif self.m_score1 == 2:
-                score = "Thirty-All"
-            elif self.m_score1 == 3:
-                score = "Forty-All"
-            else:
-                score = "Deuce"
-        elif self.m_score1 >= 4 or self.m_score2 >= 4:
-            minus_result = self.m_score1 - self. m_score2
+        if self.tie():
+            return self.get_tie_string()
 
-            if minus_result == 1:
-                score = "Advantage player1"
-            elif minus_result == -1:
-                score = "Advantage player2"
-            elif minus_result >= 2:
-                score = "Win for player1"
-            else:
-                score = "Win for player2"
-        else:
-            for i in range(1, 3):
-                if i == 1:
-                    temp_score = self.m_score1
-                else:
-                    score = score + "-"
-                    temp_score = self.m_score2
+        if not self.both_over_30():
+            return self.get_normal_score_string()
 
-                if temp_score == 0:
-                    score = score + "Love"
-                elif temp_score == 1:
-                    score = score + "Fifteen"
-                elif temp_score == 2:
-                    score = score + "Thirty"
-                elif temp_score == 3:
-                    score = score + "Forty"
-
-        return score
+        return f'Advantage {self.get_leader()}'
